@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проверка PR3</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="container">
+    <header class="page-header">
+      <h1>Проверка практической работы № 3</h1>
+      <p>Проверьте работу интерфейса списка задач.</p>
+    </header>
+
+    <section class="task-card">
+      <h2>Ручная проверка</h2>
+      <ol>
+        <li>Откройте основное приложение.</li>
+        <li>Проверьте фильтры «Все», «В работе» и «Выполненные».</li>
+        <li>Переключите статус задачи и проверьте статистику.</li>
+        <li>Удалите задачу и проверьте уменьшение общего количества.</li>
+        <li>Откройте ссылку «Свой вариант» и проверьте другой набор.</li>
+      </ol>
+      <p>
+        <a href="./index.html">Открыть приложение</a>
+      </p>
+    </section>
+
+    <section class="task-card">
+      <h2>Автоматические проверки</h2>
+      <p>Сервисные тесты запускаются из терминала командой:</p>
+      <code>node checks/service.checks.js</code>
+      <p>Проверки интерфейса выполняются в браузере вручную.</p>
+    </section>
+  </main>
+</body>
+</html>

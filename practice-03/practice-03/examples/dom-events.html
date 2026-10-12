@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пример DOM-событий</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script type="module" src="./dom-events.js"></script>
+</head>
+<body>
+  <main class="container">
+    <header class="page-header">
+      <h1>Пример DOM-событий</h1>
+      <p>Обработка кликов и изменение содержимого страницы.</p>
+    </header>
+
+    <section class="task-card">
+      <p id="counter">Количество нажатий: 0</p>
+      <button id="increment" type="button">Нажать</button>
+      <button id="reset" type="button">Сбросить</button>
+      <p id="message" role="status" aria-live="polite"></p>
+    </section>
+
+    <p><a href="../index.html">Вернуться к списку задач</a></p>
+  </main>
+</body>
+</html>
