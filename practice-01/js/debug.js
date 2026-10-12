@@ -17,5 +17,3 @@ for (let taskNumber = 1; taskNumber < 5; taskNumber += 1) {
 }
 
 console.log("Контрольная сумма:", controlSum);
-
-console.log(((13 - 1) % 8) + 1)
