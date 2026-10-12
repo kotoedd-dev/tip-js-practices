@@ -7,7 +7,13 @@ export const demoTasks = [
   { id: 10, title: "Оформить README", completed: true, priority: "medium" },
 ];
 
-// TODO: указать свой вариант и подготовить шесть задач по разделу 7 методички.
-// Пустой массив — заготовка, а не выполненный индивидуальный вариант.
-export const variantNumber = null;
-export const variantTasks = [];
+// Раздел индивидуального варианта №5 (Разработка командного прототипа)
+export const variantNumber = 5;
+export const variantTasks = [
+    { id: 11, title: "Сбор требований и анализ аналогов", completed: true, priority: "high" },
+    { id: 23, title: "Проектирование интерфейса в Figma", completed: true, priority: "medium" },
+    { id: 37, title: "Разработка архитектуры базы данных", completed: true, priority: "high" },
+    { id: 41, title: "Создание базового бэкенд-сервера", completed: true, priority: "low" },
+    { id: 58, title: "Фронтенд-разработка основных экранов", completed: false, priority: "medium" },
+    { id: 64, title: "Настройка деплоя и CI/CD пайплайна", completed: false, priority: "low" }
+];

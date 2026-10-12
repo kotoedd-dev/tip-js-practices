@@ -1,3 +1,6 @@
+// Готовый проверочный сценарий. Установка пакетов не требуется.
+// В этом файле нет реализации функций task-service.js.
+// Первоначально проверки не проходят: функции в заготовке ещё не реализованы.
 import assert from "node:assert/strict";
 import {
   createTask, findTaskById, getPendingTasks, getTaskTitles, getTaskStats,
@@ -344,15 +347,75 @@ check("35. Работа с другим набором, без зависимо�
   assert.deepEqual(tasks, before);
 });
 
-// Три собственных проверки можно добавить здесь, до итогового вывода,
-// либо выполнить отдельно и описать в отчёте. Общие проверки удалять не нужно.
-// Пример формы записи (не готовая проверка задания):
-// check("Собственный случай: ...", () => {
-//   const result = ...;
-//   assert.deepEqual(result, ...);
-// });
+import assert from "node:assert/strict";
+import { addTask, setTaskCompleted, renameTask, removeTask } from "./task-service.js"; 
+
+console.log("\n--- Запуск собственных проверок (Вариант 5) ---");
+
+const myInitialTasks = [
+  { id: 1, title: "Первая задача", priority: "low", completed: false },
+  { id: 5, title: "Вторая задача", priority: "medium", completed: true },
+  { id: 99, title: "Последняя задача", priority: "high", completed: false }
+];
+
+try {
+  const resFirst = setTaskCompleted(myInitialTasks, 1, true);
+  assert.equal(resFirst.ok, true, "Ожидался успех при изменении первой задачи");
+  assert.equal(resFirst.tasks[0].completed, true, "Статус первой задачи должен стать true");
+  
+  const resLast = renameTask(resFirst.tasks, 99, "Обновленный финал");
+  assert.equal(resLast.ok, true, "Ожидался успех при переименовании последней задачи");
+  assert.equal(resLast.tasks[2].title, "Обновленный финал", "Название последней задачи должно измениться");
+  
+  assert.notActualHydratedObject && assert.notEqual(resLast.tasks, myInitialTasks, "Исходный массив изменился (мутация!)");
+  assert.notEqual(resLast.tasks[0], myInitialTasks[0], "Объект первой задачи не был скопирован");
+  assert.notEqual(resLast.tasks[2], myInitialTasks[2], "Объект последней задачи не был скопирован");
+  assert.equal(resLast.tasks[1], myInitialTasks[1], "Неизмененный объект должен сохранить ссылку");
+
+  console.log("✔ Собственный тест 1 пройден: Граничные элементы (первый/последний) успешно изменены без мутаций.");
+} catch (err) {
+  console.error("❌ Собственный тест 1 СБОЙ:", err.message);
+  process.exit(1);
+}
+
+try {
+  // 1. Удаляем задачу с id = 5
+  const resDelete = removeTask(myInitialTasks, 5);
+  assert.equal(resDelete.ok, true);
+  assert.equal(resDelete.tasks.length, 2, "Массив должен содержать 2 элемента после удаления");
+
+  const resAddAfterDelete = addTask(resDelete.tasks, 5, "Реинкарнация задачи", "low");
+  assert.equal(resAddAfterDelete.ok, true, "Должно быть разрешено добавить ID, который был удален");
+  assert.equal(resAddAfterDelete.tasks.length, 3);
+  assert.equal(resAddAfterDelete.tasks[2].id, 5, "Новая задача должна встать строго в конец массива");
+  assert.equal(resAddAfterDelete.tasks[2].title, "Реинкарнация задачи");
+
+  console.log("✔ Собственный тест 2 пройден: Цепочка 'Удаление -> Добавление того же ID' отработала корректно.");
+} catch (err) {
+  console.error("❌ Собственный тест 2 СБОЙ:", err.message);
+  process.exit(1);
+}
+
+try {
+  const step1 = renameTask(myInitialTasks, 1, "Шаг один");
+  const step2 = renameTask(step1.tasks, 1, "Шаг два");
+  const step3 = setTaskCompleted(step2.tasks, 1, true);
+
+  assert.equal(step3.ok, true);
+  assert.equal(step3.tasks[0].title, "Шаг два", "Финальное название не совпадает");
+  assert.equal(step3.tasks[0].completed, true, "Финальный статус не совпадает");
+  assert.equal(step3.tasks.length, 3, "Размер массива не должен измениться");
+
+  console.log("✔ Собственный тест 3 пройден: Последовательные обновления одной задачи выполнены успешно.");
+} catch (err) {
+  console.error("❌ Собственный тест 3 СБОЙ:", err.message);
+  process.exit(1);
+}
+
+console.log("🎉 Все собственные проверки для 5-го варианта успешно пройдены!\n");
 
 console.log(`\nПроверок пройдено: ${passed}; не пройдено: ${failed}.`);
 if (failed > 0) {
   process.exitCode = 1;
 }
+

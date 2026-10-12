@@ -11,20 +11,28 @@ import {
   removeTask,
 } from "./task-service.js";
 
-console.log("ПР2. Заготовка демонстрационного сценария");
-console.log("Количество задач в общем наборе:", demoTasks.length);
-console.log("Номер варианта:", variantNumber);
-console.log("Количество задач в индивидуальном наборе:", variantTasks.length);
+console.log(`ПР2 | Вариант: ${variantNumber}`);
 
-// TODO: после реализации функций выполнить общий сценарий из раздела 6.5.
-// Текущее состояние хранится в локальной переменной:
-// let currentTasks = demoTasks;
-// После успешной операции currentTasks получает result.tasks.
-// При result.ok === false необходимо вывести ошибку, не заменяя состояние.
-// Сводка выводится после каждого этапа; вычисления выполняются в task-service.js.
+let currentTasks = demoTasks;
 
-// TODO: выполнить отдельный сценарий для variantTasks по разделу 7.
-// Общий набор demoTasks не заменяется данными варианта.
+// Вспомогательный чейнер для лаконичности
+const Сheck = (result) => {
+  if (result.ok) currentTasks = result.tasks;
+  else console.log(`[ОТКАЗ]: ${result.error}`);
+  const s = getTaskStats(currentTasks);
+  console.log(`Всего: ${s.total} | Вып: ${s.completed} | Ост: ${s.pending} | Прогресс: ${s.progress.toFixed(1)}%`);
+};
 
-// TODO: показать хотя бы одну обработанную ошибку и неизменность исходных данных.
-// Для удобного вывода объектов допустимо использовать console.table().
+console.log("1. Исходный набор:");
+Сheck({ ok: true, tasks: currentTasks });
+console.log("2. Добавление id = 20:");
+Сheck(addTask(currentTasks, 20, "Добавить проверку", "high"));
+console.log("3. Выполнение id = 4:");
+Сheck(setTaskCompleted(currentTasks, 4, true));
+console.log("4. Переименование id = 10:");
+Сheck(renameTask(currentTasks, 10, "Подготовить инструкцию запуска"));
+console.log("5. Удаление id = 7:");
+Сheck(removeTask(currentTasks, 7));
+console.log("6. Тест ошибки (дубликат ID):");
+Сheck(addTask(currentTasks, 20, "Повтор", "low"));
+console.log(`Исходный demoTasks без изменений: ${demoTasks.length} задач.`);
